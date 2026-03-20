@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Asistencia a Eventos</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>Registro de Asistencia a Eventos</h1>
+            <p class="subtitle">Control de Participantes - Eventos Universitarios</p>
+
+            <!-- Formulario para que los asistentes se registren. -->
+            <div class="form-card">
+                <h2>Registrar Asistente</h2>
+                <form @submit.prevent="agregarParticipante">
+                    <div class="form-group">
+                        <label>Nombre completo:</label>
+                        <input type="text" v-model="nuevoNombre" placeholder="Ej: Ana Pérez">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo electrónico:</label>
+                        <input type="email" v-model="nuevoCorreo" placeholder="ana@ejemplo.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Evento:</label>
+                        <select v-model="nuevoEvento">
+                            <option value="">Seleccione un evento</option>
+                            <option value="Conferencia Tech">Conferencia Tech</option>
+                            <option value="Taller de Vue.js">Taller de Vue.js</option>
+                            <option value="Networking 2025">Networking 2025</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Registrar asistente</button>
+                </form>
+
+                <!-- Mensaje de validación. -->
+                <p v-if="mensajeError" class="error-message">{{ mensajeError }}</p>
+                <p v-if="mensajeExito" class="success-message">{{ mensajeExito }}</p>
+            </div>
+
+            <!-- Lista de los participantes registrados. -->
+            <div class="list-card">
+                <h2>Participantes registrados ({{ participantes.length }})</h2>
+                <div v-if="participantes.length === 0" class="empty-list">
+                    No hay participantes registrados aún.
+                </div>
+                <ul v-else>
+                    <li v-for="(participante, index) in participantesFiltrados" :key="index" class="participante-item">
+                        <div class="participante-info">
+                            <strong>{{ participante.nombre }}</strong> - {{ participante.correo }}<br>
+                            <span class="evento-badge">{{ participante.evento }}</span>
+                        </div>
+                        <button @click="eliminarParticipante(index)" class="btn-delete">Eliminar</button>
+                    </li>
+                </ul>
+
+                <!-- Esto es para que se filtren los participantes/asistentes por evento. -->
+                <div class="filter-section">
+                    <label>Filtrar por evento:</label>
+                    <select v-model="filtroEvento">
+                        <option value="">Todos</option>
+                        <option value="Conferencia Tech">Conferencia Tech</option>
+                        <option value="Taller de Vue.js">Taller de Vue.js</option>
+                        <option value="Networking 2025">Networking 2025</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
